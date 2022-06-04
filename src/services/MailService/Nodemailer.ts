@@ -56,7 +56,6 @@ function html(url: string, host: string, email: string) {
 }
 
 export function sendMail(url: string, host: string, to: string) {
-    console.log(process.env.VERCEL_URL);
     const mailOptions = {
         from: process.env.ZOHO_USER,
         to,
