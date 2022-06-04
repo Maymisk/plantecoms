@@ -1,11 +1,10 @@
+import { FormEvent, useState } from 'react';
+import { AiOutlineLoading } from 'react-icons/ai';
+import { FiX } from 'react-icons/fi';
 import Modal from 'react-modal';
+import { api } from '../../services/api';
 import { SubmitPostButton } from '../SubmitPostButton';
 import { FileInputContainer } from './styles';
-import { FiX } from 'react-icons/fi';
-import { ChangeEvent, FormEvent, useState } from 'react';
-import { api } from '../../services/api';
-import { useSession } from 'next-auth/react';
-import { AiOutlineLoading } from 'react-icons/ai';
 
 interface IProps {
     isOpen: boolean;
