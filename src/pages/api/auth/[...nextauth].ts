@@ -24,8 +24,8 @@ const options = {
     ],
 
     pages: {
-        signIn: '/auth/SignIn/signIn',
-        verifyRequest: '/auth/VerifyRequest/verify-request'
+        signIn: '/auth/signIn',
+        verifyRequest: '/auth/verify-request'
     }
 };
 

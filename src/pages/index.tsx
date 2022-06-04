@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { CreatePostButton } from '../components/CreatePostButton';
 import { CreatePostModal } from '../components/CreatePostModal';
 import { PostCard } from '../components/PostCard';
-import { Main } from './homeStyles';
+import { Main } from '../styles/homeStyles';
 
 export default function Home() {
     const [postModalIsOpen, setPostModalIsOpen] = useState(false);

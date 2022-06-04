@@ -1,5 +1,5 @@
 import { getCsrfToken } from 'next-auth/react';
-import { Container } from './styles';
+import { Container } from '../../styles/SignInStyles';
 
 export default function SignIn({ csrfToken }) {
     return (
