@@ -6,9 +6,12 @@ import { Main } from '../styles/homeStyles';
 
 export default function Home() {
     const [postModalIsOpen, setPostModalIsOpen] = useState(false);
+
+    console.log(process.env.VERCEL_URL);
+
     return (
         <Main>
-            <section className="dois">
+            <section>
                 <p>
                     Dia 05/06 é mundialmente conhecido como o Dia Mundial do
                     Meio Ambiente. Com esse conhecimento em mente, a turma 202

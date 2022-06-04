@@ -1,6 +1,6 @@
 import nodemailer from 'nodemailer';
 
-let transporter = nodemailer.createTransport({
+const transporter = nodemailer.createTransport({
     host: 'smtp.zoho.com',
     secure: true,
     port: 465,
@@ -56,6 +56,7 @@ function html(url: string, host: string, email: string) {
 }
 
 export function sendMail(url: string, host: string, to: string) {
+    console.log(process.env);
     const mailOptions = {
         from: process.env.ZOHO_USER,
         to,
