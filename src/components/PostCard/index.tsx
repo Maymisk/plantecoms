@@ -14,7 +14,7 @@ export function PostCard({ username, description, main_picture }: IProps) {
                 <div>{username}</div>
             </header>
             <main>
-                <Image src={main_picture} alt="Post picture" />
+                <img src={main_picture} alt="Post picture" />
             </main>
             <footer>{description}</footer>
         </Container>
