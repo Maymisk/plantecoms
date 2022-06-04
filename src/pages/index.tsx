@@ -6,7 +6,6 @@ import { Main } from '../styles/homeStyles';
 
 export default function Home() {
     const [postModalIsOpen, setPostModalIsOpen] = useState(false);
-    console.log(process.env.VERCEL_URL);
     return (
         <Main>
             <section className="dois">
