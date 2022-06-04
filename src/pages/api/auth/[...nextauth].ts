@@ -13,7 +13,7 @@ const options = {
     providers: [
         EmailProvider({
             server: process.env.EMAIL_SERVER,
-            from: process.env.EMAIL_FROM,
+            from: process.env.ZOHO_USER,
             secret: process.env.NEXTAUTH_SECRET,
             sendVerificationRequest({ identifier: email, url }) {
                 const { host } = new URL(url);
