@@ -13,7 +13,7 @@ interface IRequest extends NextApiRequest {
 
 const upload = multer({
     storage: multer.diskStorage({
-        destination: join(process.cwd(), 'public', 'uploads'),
+        destination: join(process.cwd(), 'tmp'),
         filename: (req, file, cb) =>
             cb(null, new Date().getTime() + '-' + file.originalname)
     })
@@ -32,7 +32,7 @@ const handler = nc<NextApiRequest, NextApiResponse>({
         const file = request.file;
 
         if (!session || !description) {
-            deleteFile(join(process.cwd(), 'public', 'uploads', file.filename));
+            deleteFile(join(process.cwd(), 'tmp', file.filename));
             return response.status(400).redirect('/');
         }
 
