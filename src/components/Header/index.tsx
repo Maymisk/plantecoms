@@ -17,9 +17,11 @@ export function Header() {
             <HeaderTag>
                 <div>
                     <section>
-                        <a href="/">
-                            <h1>Plante com S</h1>
-                        </a>
+                        <Link href="/">
+                            <a>
+                                <h1>Plante com S</h1>
+                            </a>
+                        </Link>
                     </section>
 
                     <nav className="navigation-options">

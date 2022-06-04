@@ -3,7 +3,10 @@ import { fauna } from '../../services/faunadb';
 import { query as q } from 'faunadb';
 import { sendMail } from '../../services/MailService/Nodemailer';
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
+export default async function getPosts(
+    req: NextApiRequest,
+    res: NextApiResponse
+) {
     if (req.method === 'GET') {
         const posts = await fauna.query(
             q.Map(
@@ -17,4 +20,4 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         res.setHeader('Allow', 'GET');
         return res.status(405).end('Method not allowed');
     }
-};
+}

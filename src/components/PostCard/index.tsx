@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { Container } from './styles';
 
 interface IProps {
@@ -13,7 +14,9 @@ export function PostCard({ username, description, main_picture }: IProps) {
                 <div>{username}</div>
             </header>
             <main>
-                <img src={main_picture} alt="Post picture" />
+                <Image src={main_picture}>
+                    <img alt="Post picture" />
+                </Image>
             </main>
             <footer>{description}</footer>
         </Container>
