@@ -24,7 +24,7 @@ export function CreatePostModal({ isOpen, setIsOpen }: IProps) {
         formData.append('description', description);
         formData.append('file', imgInput);
 
-        api.post('/submitPost', formData).then(() => {
+        api.post('/submitpost', formData).then(() => {
             setImgInput(null);
             setDescription('');
             closeModal();

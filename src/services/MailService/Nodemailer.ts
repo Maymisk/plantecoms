@@ -2,11 +2,14 @@ import nodemailer from 'nodemailer';
 
 const transporter = nodemailer.createTransport({
     host: 'smtp.zoho.com',
-    secure: false,
-    port: 587,
+    secure: true,
+    port: 465,
     auth: {
         user: process.env.ZOHO_USER,
         pass: process.env.ZOHO_PASSWORD
+    },
+    tls: {
+        ciphers: 'SSLv3'
     }
 });
 
@@ -55,7 +58,7 @@ function html(url: string, host: string, email: string) {
     `;
 }
 
-export function sendMail(url: string, host: string, to: string) {
+export async function sendMail(url: string, host: string, to: string) {
     const mailOptions = {
         from: process.env.ZOHO_USER,
         to,
@@ -63,9 +66,5 @@ export function sendMail(url: string, host: string, to: string) {
         html: html(url, host, to)
     };
 
-    transporter.sendMail(mailOptions, (err, info) => {
-        if (err) {
-            console.log(err);
-        }
-    });
+    return await transporter.sendMail(mailOptions);
 }

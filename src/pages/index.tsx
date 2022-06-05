@@ -7,8 +7,6 @@ import { Main } from '../styles/homeStyles';
 export default function Home() {
     const [postModalIsOpen, setPostModalIsOpen] = useState(false);
 
-    console.log(process.env.NEXT_PUBLIC_VERCEL_URL);
-
     return (
         <Main>
             <section>
