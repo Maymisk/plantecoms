@@ -6,7 +6,7 @@ import nc from 'next-connect';
 import { fauna } from '../../services/faunadb';
 import { query as q } from 'faunadb';
 import { deleteFile } from '../../utils/deleteFile';
-import { upload } from '../../utils/upload';
+import upload from '../../utils/upload';
 
 interface IRequest extends NextApiRequest {
     file: any;
@@ -21,7 +21,7 @@ export default nc({
         res.status(404).end('Page is not found');
     }
 })
-    .use(upload.single('file'))
+    .use(upload)
     .post('/api/submitpost', async (request: IRequest, response) => {
         const session = await getSession({ req: request });
         const { description } = request.body;
