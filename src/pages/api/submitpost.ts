@@ -25,15 +25,16 @@ export default async function submitPost(
             return res.status(400).json({ message: 'Incomplete request body' });
         }
 
-        const fileParams = {
+        const s3Params = {
             Bucket: `${process.env.AWS_BUCKET}/posts`,
             Key: name,
             ACL: 'public-read',
+            Expires: 60,
             ContentType: type
         };
 
         const s3 = new S3StorageProvider();
-        const url = await s3.getPutObjectSignedUrl(fileParams);
+        const url = await s3.getPutObjectSignedUrl(s3Params);
 
         const username = session.user.email.split('@')[0];
 
