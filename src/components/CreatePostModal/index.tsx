@@ -1,12 +1,11 @@
+import axios from 'axios';
 import { FormEvent, useState } from 'react';
 import { AiOutlineLoading } from 'react-icons/ai';
-import { FiArrowUpLeft, FiX } from 'react-icons/fi';
+import { FiX } from 'react-icons/fi';
 import Modal from 'react-modal';
 import { api } from '../../services/api';
 import { SubmitPostButton } from '../SubmitPostButton';
 import { FileInputContainer } from './styles';
-import axios from 'axios';
-import mime from 'mime';
 
 interface IProps {
     isOpen: boolean;
