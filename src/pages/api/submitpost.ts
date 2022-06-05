@@ -19,15 +19,7 @@ const upload = multer({
     })
 });
 
-const handler = nc<NextApiRequest, NextApiResponse>({
-    onError: (err, req, res, next) => {
-        console.error(err.stack);
-        res.status(500).end('Alguma coisa quebrou!');
-    },
-    onNoMatch: (req, res) => {
-        res.status(404).end('Página não encontrada');
-    }
-});
+const handler = nc<NextApiRequest, NextApiResponse>();
 
 handler.post('/api/submitpost', async (request: IRequest, response) => {
     console.log(request.body);
