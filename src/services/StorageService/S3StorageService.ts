@@ -1,16 +1,22 @@
 import { upload, tmpFolder } from '../../utils/upload';
-import { S3 } from 'aws-sdk';
+import AWS from 'aws-sdk';
 import mime from 'mime';
 
 import { resolve } from 'path';
 import fs from 'fs';
 
 export class S3StorageProvider {
-    private client: S3;
+    private client: AWS.S3;
 
     constructor() {
-        this.client = new S3({
-            region: process.env.AWS_BUCKET_REGION
+        const credentials = new AWS.Credentials({
+            accessKeyId: process.env.AWSACCESS_KEY,
+            secretAccessKey: process.env.AWSSECRET_KEY
+        });
+
+        this.client = new AWS.S3({
+            region: process.env.AWS_BUCKET_REGION,
+            credentials
         });
     }
 
