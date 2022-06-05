@@ -48,7 +48,7 @@ export const Container = styled.div`
         align-items: center;
 
         img {
-            width: 100%;
+            max-width: 100%;
 
             border-radius: 0.25rem;
         }

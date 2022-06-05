@@ -1,7 +1,6 @@
+import { query as q } from 'faunadb';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { fauna } from '../../services/faunadb';
-import { query as q } from 'faunadb';
-import { sendMail } from '../../services/MailService/Nodemailer';
 
 export default async function getPosts(
     req: NextApiRequest,
