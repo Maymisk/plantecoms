@@ -1,10 +1,11 @@
 import { FormEvent, useState } from 'react';
 import { AiOutlineLoading } from 'react-icons/ai';
-import { FiX } from 'react-icons/fi';
+import { FiArrowUpLeft, FiX } from 'react-icons/fi';
 import Modal from 'react-modal';
 import { api } from '../../services/api';
 import { SubmitPostButton } from '../SubmitPostButton';
 import { FileInputContainer } from './styles';
+import axios from 'axios';
 
 interface IProps {
     isOpen: boolean;
@@ -12,7 +13,7 @@ interface IProps {
 }
 
 export function CreatePostModal({ isOpen, setIsOpen }: IProps) {
-    const [imgInput, setImgInput] = useState<File>(null);
+    const [file, setFile] = useState<File>(null);
     const [description, setDescription] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 
@@ -20,16 +21,29 @@ export function CreatePostModal({ isOpen, setIsOpen }: IProps) {
         setIsLoading(true);
         event.preventDefault();
 
-        const formData = new FormData();
-        formData.append('description', description);
-        formData.append('file', imgInput);
+        async function uploadFile() {
+            const { data } = await api.post('/submitpost', {
+                name: file.name,
+                type: file.type,
+                description
+            });
 
-        api.post('/submitpost', formData).then(() => {
-            setImgInput(null);
-            setDescription('');
-            closeModal();
+            const url = data.url;
+
+            await axios.put(url, file, {
+                headers: {
+                    'Content-type': file.type,
+                    'Access-Control-Allow-Origin': '*'
+                }
+            });
+
             setIsLoading(false);
-        });
+            setIsOpen(false);
+            setFile(null);
+            setDescription('');
+        }
+
+        uploadFile();
     }
 
     function closeModal() {
@@ -60,7 +74,7 @@ export function CreatePostModal({ isOpen, setIsOpen }: IProps) {
                         name="file"
                         id="fileInput"
                         onChange={event => {
-                            setImgInput(event.target.files[0]);
+                            setFile(event.target.files[0]);
                             event.target.value = null;
                         }}
                     />

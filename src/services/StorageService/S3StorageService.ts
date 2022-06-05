@@ -5,8 +5,6 @@ import mime from 'mime';
 import { resolve } from 'path';
 import fs from 'fs';
 
-import { tmpdir } from 'os';
-
 export class S3StorageProvider {
     private client: S3;
 
@@ -16,34 +14,38 @@ export class S3StorageProvider {
         });
     }
 
-    async save(file: string, folder: string) {
-        const fileDir = resolve(tmpFolder, file);
-
-        const fileContent = await fs.promises.readFile(fileDir);
-
-        const ContentType = mime.getType(fileDir);
-
-        await this.client
-            .putObject({
-                Bucket: `${process.env.AWS_BUCKET}/${folder}`,
-                Key: file,
-                ACL: 'public-read',
-                Body: fileContent,
-                ContentType
-            })
-            .promise();
-
-        const objectUrl = process.env.AWS_URL + '/posts/' + file;
-
-        return objectUrl;
+    async getPutObjectSignedUrl(params: any) {
+        return await this.client.getSignedUrlPromise('putObject', params);
     }
 
-    async delete(file: string, folder: string): Promise<void> {
-        await this.client
-            .deleteObject({
-                Bucket: `${process.env.AWS_BUCKET}/${folder}`,
-                Key: file
-            })
-            .promise();
-    }
+    // async save(file: string, folder: string) {
+    //     const fileDir = resolve(tmpFolder, file);
+
+    //     const fileContent = await fs.promises.readFile(fileDir);
+
+    //     const ContentType = mime.getType(fileDir);
+
+    //     await this.client
+    //         .putObject({
+    //             Bucket: `${process.env.AWS_BUCKET}/${folder}`,
+    //             Key: file,
+    //             ACL: 'public-read',
+    //             Body: fileContent,
+    //             ContentType
+    //         })
+    //         .promise();
+
+    //     const objectUrl = process.env.AWS_URL + '/posts/' + file;
+
+    //     return objectUrl;
+    // }
+
+    // async delete(file: string, folder: string): Promise<void> {
+    //     await this.client
+    //         .deleteObject({
+    //             Bucket: `${process.env.AWS_BUCKET}/${folder}`,
+    //             Key: file
+    //         })
+    //         .promise();
+    // }
 }
