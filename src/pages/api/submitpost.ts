@@ -8,6 +8,7 @@ import { query as q } from 'faunadb';
 import { deleteFile } from '../../utils/deleteFile';
 import { upload, tmpFolder } from '../../utils/upload';
 import { S3StorageProvider } from '../../services/StorageService/S3StorageService';
+import mime from 'mime';
 
 export default async function submitPost(
     req: NextApiRequest,

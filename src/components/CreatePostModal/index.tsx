@@ -6,6 +6,7 @@ import { api } from '../../services/api';
 import { SubmitPostButton } from '../SubmitPostButton';
 import { FileInputContainer } from './styles';
 import axios from 'axios';
+import mime from 'mime';
 
 interface IProps {
     isOpen: boolean;
@@ -34,11 +35,10 @@ export function CreatePostModal({ isOpen, setIsOpen }: IProps) {
                 headers: {
                     'Content-type': file.type,
                     'Access-Control-Allow-Origin': '*',
-                    'x-amz-acl': 'public-read'
+                    'x-amz-acl': 'public-read',
+                    Key: file.name
                 }
             });
-
-            console.log(response);
 
             setIsLoading(false);
             setIsOpen(false);
