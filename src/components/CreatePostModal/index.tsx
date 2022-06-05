@@ -24,6 +24,8 @@ export function CreatePostModal({ isOpen, setIsOpen }: IProps) {
         formData.append('description', description);
         formData.append('file', imgInput);
 
+        console.log(formData);
+
         const config = {
             headers: { 'content-type': 'multipart/form-data' }
         };
