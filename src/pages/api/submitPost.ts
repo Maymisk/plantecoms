@@ -66,10 +66,12 @@ handler.post(async (request: IRequest, response) => {
     return response.status(200).end();
 });
 
-export default handler;
+// export const config = {
+//     api: {
+//         bodyParser: false
+//     }
+// };
 
-export const config = {
-    api: {
-        bodyParser: false
-    }
-};
+export default async function test(req: NextApiRequest, res: NextApiResponse) {
+    res.status(200).send({ message: 'everything worked!' });
+}
