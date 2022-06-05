@@ -74,6 +74,7 @@ export default async function submitPost(
     res: NextApiResponse
 ) {
     if (req.method === 'POST') {
+        console.log(req.body);
         res.status(200).send({ message: 'it worked (for no reason)' });
     } else {
         res.setHeader('Allow', 'POST');

@@ -30,7 +30,7 @@ export function CreatePostModal({ isOpen, setIsOpen }: IProps) {
             headers: { 'content-type': 'multipart/form-data' }
         };
 
-        api.post('/fodase', formData, config).then(() => {
+        api.post('/submitpost', formData, config).then(() => {
             setImgInput(null);
             setDescription('');
             closeModal();
