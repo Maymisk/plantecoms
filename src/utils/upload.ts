@@ -5,7 +5,9 @@ export const tmpFolder = resolve(__dirname, '..', 'tmp');
 
 export const upload = multer({
     storage: multer.diskStorage({
-        destination: tmpFolder,
+        destination: (req, file, cb) => {
+            cb(null, tmpFolder);
+        },
         filename: (req, file, cb) =>
             cb(null, new Date().getTime() + '-' + file.originalname)
     })
