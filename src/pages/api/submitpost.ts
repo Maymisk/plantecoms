@@ -16,8 +16,16 @@ export default async function submitPost(
         const { name, type, description } = req.body;
         const session = await getSession({ req });
 
-        if (!(name && type && description && session)) {
-            return res.status(400).json({ message: 'Incomplete request body' });
+        if (!(name && type)) {
+            return res.status(400).json({ message: 'Missing file' });
+        }
+
+        if (!description) {
+            return res.status(400).json({ message: 'Missing description' });
+        }
+
+        if (!session) {
+            return res.status(400).json({ message: 'User needs to log in' });
         }
 
         const s3Params = {

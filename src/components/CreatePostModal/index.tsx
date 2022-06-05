@@ -16,33 +16,51 @@ export function CreatePostModal({ isOpen, setIsOpen }: IProps) {
     const [file, setFile] = useState<File>(null);
     const [description, setDescription] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const [submissionErrorMessage, setSubmissionErrorMessage] = useState('');
 
     function handleFormSubmission(event: FormEvent) {
         setIsLoading(true);
         event.preventDefault();
 
         async function uploadFile() {
-            const { data } = await api.post('/submitpost', {
-                name: file.name,
-                type: file.type,
-                description
-            });
+            try {
+                const { data } = await api.post('/submitpost', {
+                    name: file.name,
+                    type: file.type,
+                    description
+                });
 
-            const url = data.url;
+                const url = data.url;
 
-            const response = await axios.put(url, file, {
-                headers: {
-                    'Content-type': file.type,
-                    'Access-Control-Allow-Origin': '*',
-                    'x-amz-acl': 'public-read',
-                    Key: file.name
+                const response = await axios.put(url, file, {
+                    headers: {
+                        'Content-type': file.type,
+                        'Access-Control-Allow-Origin': '*',
+                        'x-amz-acl': 'public-read',
+                        Key: file.name
+                    }
+                });
+            } catch (error) {
+                setIsLoading(false);
+
+                if (error.response?.data.message === 'User needs to log in') {
+                    setSubmissionErrorMessage('Você precisa estar logado!');
                 }
-            });
+
+                if (error instanceof TypeError) {
+                    setSubmissionErrorMessage(
+                        'Você precisa selecionar um arquivo!'
+                    );
+                }
+
+                return;
+            }
 
             setIsLoading(false);
-            setIsOpen(false);
             setFile(null);
             setDescription('');
+            setIsOpen(false);
+            setSubmissionErrorMessage('');
         }
 
         uploadFile();
@@ -50,6 +68,7 @@ export function CreatePostModal({ isOpen, setIsOpen }: IProps) {
 
     function closeModal() {
         setIsOpen(false);
+        setSubmissionErrorMessage('');
     }
 
     return (
@@ -63,7 +82,7 @@ export function CreatePostModal({ isOpen, setIsOpen }: IProps) {
             <form onSubmit={handleFormSubmission}>
                 <button
                     type="button"
-                    onClick={() => setIsOpen(false)}
+                    onClick={closeModal}
                     className="react-modal-close"
                 >
                     <FiX />
@@ -72,11 +91,13 @@ export function CreatePostModal({ isOpen, setIsOpen }: IProps) {
                 <FileInputContainer>
                     <label htmlFor="fileInput">Selecione uma foto</label>
                     <input
+                        accept="image/*"
                         type="file"
                         name="file"
                         id="fileInput"
                         onChange={event => {
                             setFile(event.target.files[0]);
+                            setSubmissionErrorMessage('');
                             event.target.value = null;
                         }}
                     />
@@ -90,6 +111,7 @@ export function CreatePostModal({ isOpen, setIsOpen }: IProps) {
                         placeholder="Digite a descrição do post..."
                         onChange={event => {
                             setDescription(event.target.value);
+                            setSubmissionErrorMessage('');
                         }}
                         value={description}
                     />
@@ -99,7 +121,7 @@ export function CreatePostModal({ isOpen, setIsOpen }: IProps) {
                         {isLoading ? (
                             <AiOutlineLoading className="loading" />
                         ) : (
-                            'Enviar'
+                            `${submissionErrorMessage}` || 'Enviar'
                         )}
                     </SubmitPostButton>
                 </div>
