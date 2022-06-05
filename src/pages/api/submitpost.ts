@@ -6,20 +6,13 @@ import nc from 'next-connect';
 import { fauna } from '../../services/faunadb';
 import { query as q } from 'faunadb';
 import { deleteFile } from '../../utils/deleteFile';
+import { upload } from '../../utils/upload';
 
 interface IRequest extends NextApiRequest {
     file: any;
 }
 
-const upload = multer({
-    storage: multer.diskStorage({
-        destination: join(process.cwd(), 'tmp'),
-        filename: (req, file, cb) =>
-            cb(null, new Date().getTime() + '-' + file.originalname)
-    })
-});
-
-const handler = nc({
+export default nc({
     onError: (err, req: NextApiRequest, res: NextApiResponse, next) => {
         console.error(err.stack);
         res.status(500).end('Something broke!');
@@ -27,49 +20,43 @@ const handler = nc({
     onNoMatch: (req, res) => {
         res.status(404).end('Page is not found');
     }
-}).post((req, res) => {
-    res.json({ hello: 'world' });
-});
+})
+    .use(upload.single('file'))
+    .post('/api/submitpost', async (request: IRequest, response) => {
+        const session = await getSession({ req: request });
+        const { description } = request.body;
+        const file = request.file;
 
-export default handler;
+        if (!session || !description) {
+            deleteFile(join(process.cwd(), 'tmp', file.filename));
+            return response.status(400).redirect('/');
+        }
 
-// export default nc<NextApiRequest, NextApiResponse>().post(
-//     '/api/submitpost',
-//     async (request: IRequest, response) => {
-//         console.log(request.body);
-// const session = await getSession({ req: request });
-// const { description } = request.body;
-// const file = request.file;
+        if (!file) {
+            return response.status(400).redirect('/');
+        }
 
-// if (!session || !description) {
-//     deleteFile(join(process.cwd(), 'tmp', file.filename));
-//     return response.status(400).redirect('/');
-// }
+        const username = session.user.email.split('@')[0];
 
-// if (!file) {
-//     return response.status(400).redirect('/');
-// }
+        try {
+            const object = await fauna.query(
+                q.Create(q.Collection('posts'), {
+                    data: {
+                        username,
+                        main_picture: join(process.cwd(), 'tmp', file.filename),
+                        description
+                    }
+                })
+            );
 
-// const username = session.user.email.split('@')[0];
-
-// try {
-//     const object = await fauna.query(
-//         q.Create(q.Collection('posts'), {
-//             data: {
-//                 username,
-//                 main_picture: join(process.cwd(), 'tmp', file.filename),
-//                 description
-//             }
-//         })
-//     );
-
-//     return response.status(201).json(object);
-// } catch (err) {
-//     console.log(err);
-//     return response.status(500).json({ message: 'Perdoa nois, deu erro' });
-// }
-//     }
-// );
+            return response.status(201).json(object);
+        } catch (err) {
+            console.log(err);
+            return response
+                .status(500)
+                .json({ message: 'Perdoa nois, deu erro' });
+        }
+    });
 
 export const config = {
     api: {
