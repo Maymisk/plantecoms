@@ -33,7 +33,8 @@ export function CreatePostModal({ isOpen, setIsOpen }: IProps) {
             await axios.put(url, file, {
                 headers: {
                     'Content-type': file.type,
-                    'Access-Control-Allow-Origin': '*'
+                    'Access-Control-Allow-Origin': '*',
+                    'x-amz-acl': 'public-read'
                 }
             });
 
