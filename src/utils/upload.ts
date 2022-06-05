@@ -1,11 +1,11 @@
 import multer from 'multer';
-import { join } from 'path';
+import { resolve } from 'path';
+
+export const tmpFolder = resolve(__dirname, '..', 'tmp');
 
 export const upload = multer({
     storage: multer.diskStorage({
-        destination: function (req, file, cb) {
-            cb(null, '/tmp');
-        },
+        destination: tmpFolder,
         filename: (req, file, cb) =>
             cb(null, new Date().getTime() + '-' + file.originalname)
     })

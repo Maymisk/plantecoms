@@ -6,7 +6,8 @@ import nc from 'next-connect';
 import { fauna } from '../../services/faunadb';
 import { query as q } from 'faunadb';
 import { deleteFile } from '../../utils/deleteFile';
-import { upload } from '../../utils/upload';
+import { upload, tmpFolder } from '../../utils/upload';
+import { S3StorageProvider } from '../../services/StorageService/S3StorageService';
 
 interface IRequest extends NextApiRequest {
     file: any;
@@ -25,16 +26,22 @@ export default nc({
     .post('/api/submitpost', async (request: IRequest, response) => {
         const session = await getSession({ req: request });
         const { description } = request.body;
-        const file = request.file;
+
+        const file = request.file.filename;
+        const fileDir = tmpFolder + file;
 
         if (!session || !description) {
-            deleteFile(join(process.cwd(), 'tmp', file.filename));
+            deleteFile(fileDir);
             return response.status(400).redirect('/');
         }
 
         if (!file) {
             return response.status(400).redirect('/');
         }
+
+        const storageProvider = new S3StorageProvider();
+
+        const objectUrl = await storageProvider.save(file, 'posts');
 
         const username = session.user.email.split('@')[0];
 
@@ -43,7 +50,7 @@ export default nc({
                 q.Create(q.Collection('posts'), {
                     data: {
                         username,
-                        main_picture: join(process.cwd(), 'tmp', file.filename),
+                        main_picture: objectUrl,
                         description
                     }
                 })

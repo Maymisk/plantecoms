@@ -15,21 +15,24 @@ const options = {
             server: process.env.EMAIL_SERVER,
             from: process.env.ZOHO_USER,
             secret: process.env.NEXTAUTH_SECRET,
-            async sendVerificationRequest({ identifier: email, url }) {
-                const { host } = new URL(url);
+            sendVerificationRequest({ identifier: email, url }) {
+                return new Promise(resolve => {
+                    const { host } = new URL(url);
 
-                await sendMail(url, host, email);
-                return;
+                    sendMail(url, host, email).then(() => {
+                        resolve();
+                    });
+                });
             }
         })
     ],
-    //https://stackoverflow.com/questions/64885483/error-client-network-socket-disconnected-before-secure-tls-connection-was-esta
+
     pages: {
         signIn: '/auth/signIn',
         verifyRequest: '/auth/verify-request'
     }
 };
 
-export default function Auth(req: NextApiRequest, res: NextApiResponse) {
-    NextAuth(req, res, options);
+export default async function Auth(req: NextApiRequest, res: NextApiResponse) {
+    await NextAuth(req, res, options);
 }
