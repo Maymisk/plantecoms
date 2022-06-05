@@ -30,13 +30,15 @@ export function CreatePostModal({ isOpen, setIsOpen }: IProps) {
 
             const url = data.url;
 
-            await axios.put(url, file, {
+            const response = await axios.put(url, file, {
                 headers: {
                     'Content-type': file.type,
                     'Access-Control-Allow-Origin': '*',
                     'x-amz-acl': 'public-read'
                 }
             });
+
+            console.log(response);
 
             setIsLoading(false);
             setIsOpen(false);
