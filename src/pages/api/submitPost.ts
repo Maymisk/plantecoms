@@ -27,52 +27,48 @@ const handler = nc<NextApiRequest, NextApiResponse>({
     onNoMatch: (req, res) => {
         res.status(404).end('Página não encontrada');
     }
-})
-    .use(upload.single('file'))
-    .post((request: IRequest, response) => {
-        console.log('indo pegar a session');
-        getSession({ req: request }).then(session => {
-            console.log(session);
-            const { description } = request.body;
-            const file = request.file;
+});
 
-            if (!session || !description) {
-                deleteFile(join(process.cwd(), 'tmp', file.filename));
-                return response.status(400).redirect('/');
-            }
+handler.use(upload.single('file'));
 
-            if (!file) {
-                console.log('file if');
-                return response.status(400).redirect('/');
-            }
+handler.post(async (request: IRequest, response) => {
+    const session = await getSession({ req: request });
+    const { description } = request.body;
+    const file = request.file;
 
-            const username = session.user.email.split('@')[0];
+    if (!session || !description) {
+        deleteFile(join(process.cwd(), 'tmp', file.filename));
+        return response.status(400).redirect('/');
+    }
 
-            try {
-                fauna
-                    .query(
-                        q.Create(q.Collection('posts'), {
-                            data: {
-                                username,
-                                main_picture: file.filename,
-                                description
-                            }
-                        })
-                    )
-                    .then(object => response.status(201).json(object));
-            } catch (err) {
-                console.log(err);
-                return response
-                    .status(500)
-                    .json({ message: 'Perdoa nois, deu erro' });
-            }
-        });
-    });
+    if (!file) {
+        return response.status(400).redirect('/');
+    }
+
+    const username = session.user.email.split('@')[0];
+
+    try {
+        const object = await fauna.query(
+            q.Create(q.Collection('posts'), {
+                data: {
+                    username,
+                    main_picture: file.filename,
+                    description
+                }
+            })
+        );
+
+        return response.status(201).json(object);
+    } catch (err) {
+        console.log(err);
+        return response.status(500).json({ message: 'Perdoa nois, deu erro' });
+    }
+});
+
+export default handler;
 
 export const config = {
     api: {
         bodyParser: false
     }
 };
-
-export default handler;
