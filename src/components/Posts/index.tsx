@@ -31,7 +31,7 @@ export function PostsGrid() {
                         key={post.ts}
                         username={post.data.username}
                         description={post.data.description}
-                        main_picture={'/uploads/' + post.data.main_picture}
+                        main_picture={post.data.main_picture}
                     />
                 );
             })}
