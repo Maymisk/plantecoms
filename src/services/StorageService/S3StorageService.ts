@@ -5,6 +5,8 @@ import mime from 'mime';
 import { resolve } from 'path';
 import fs from 'fs';
 
+import { tmpdir } from 'os';
+
 export class S3StorageProvider {
     private client: S3;
 
@@ -16,6 +18,7 @@ export class S3StorageProvider {
 
     async save(file: string, folder: string) {
         const fileDir = resolve(tmpFolder, file);
+
         const fileContent = await fs.promises.readFile(fileDir);
 
         const ContentType = mime.getType(fileDir);

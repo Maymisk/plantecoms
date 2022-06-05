@@ -26,8 +26,8 @@ export default nc({
     .post('/api/submitpost', async (request: IRequest, response) => {
         const session = await getSession({ req: request });
         const { description } = request.body;
-
         const file = request.file.filename;
+
         const fileDir = tmpFolder + file;
 
         if (!session || !description) {

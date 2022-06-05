@@ -1,7 +1,8 @@
 import multer from 'multer';
 import { resolve } from 'path';
+import { tmpdir } from 'os';
 
-export const tmpFolder = resolve(process.cwd(), 'tmp');
+export const tmpFolder = tmpdir();
 
 export const upload = multer({
     storage: multer.diskStorage({
