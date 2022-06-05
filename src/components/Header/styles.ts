@@ -16,29 +16,28 @@ export const HeaderTag = styled.header`
         display: flex;
         justify-content: center;
         align-items: center;
-        gap: 1rem;
 
         color: black;
 
-        section a {
-            display: flex;
-            align-items: center;
-            justify-items: center;
+        section {
+            width: 40%;
+            a {
+                color: black;
 
-            color: black;
+                h1 {
+                    font-size: 2rem;
 
-            h1 {
-                font-size: 2rem;
-            }
+                    display: flex;
+                    align-items: center;
 
-            img {
-                height: 4.5rem;
-                width: 50px;
+                    img {
+                        height: 4rem;
+                        clip-path: polygon(61% 0, 100% 0%, 100% 100%, 61% 100%);
 
-                clip-path: polygon(61% 0, 100% 0%, 100% 100%, 61% 100%);
-
-                position: relative;
-                left: -5rem;
+                        position: relative;
+                        left: -5rem;
+                    }
+                }
             }
         }
 
@@ -53,6 +52,10 @@ export const HeaderTag = styled.header`
         button {
             &:nth-of-type(1) {
                 display: none;
+            }
+
+            & + button {
+                margin-left: 1rem;
             }
         }
 

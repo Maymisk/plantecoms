@@ -19,7 +19,13 @@ export function Header() {
                     <section>
                         <Link href="/">
                             <a>
-                                <h1>Plante com S</h1>
+                                <h1>
+                                    Plante com{' '}
+                                    <img
+                                        src="/images/logo.png"
+                                        alt="Logo escola S"
+                                    />
+                                </h1>
                             </a>
                         </Link>
                     </section>

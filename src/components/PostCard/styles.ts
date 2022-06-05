@@ -7,8 +7,6 @@ export const Container = styled.div`
     border: 1px solid black;
     border-radius: 1rem;
 
-    padding: 1rem;
-
     box-shadow: var(--shadow1);
     background: #faf6d4;
     color: black;
@@ -20,29 +18,12 @@ export const Container = styled.div`
     }
 
     header {
-        display: flex;
-        justify-content: left;
-        align-items: center;
-        gap: 1rem;
-
-        padding: 0.2rem;
-
-        margin-bottom: 0.2rem;
-
-        img {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-
-            border: 2px solid black;
-        }
+        padding: 0.5rem 0.8rem;
     }
 
     main {
-        padding: 0.2rem;
-
-        border-top: 1px solid var(--brown-500);
-        border-bottom: 1px solid var(--brown-500);
+        border: 1px solid var(--brown-500);
+        border-radius: 0 0 0.25rem 0.25rem;
 
         display: flex;
         align-items: center;
@@ -55,7 +36,7 @@ export const Container = styled.div`
     }
 
     footer {
-        margin-top: 0.2rem;
+        padding: 1rem;
 
         display: flex;
         justify-content: left;

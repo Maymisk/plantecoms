@@ -81,6 +81,10 @@ export const GlobalStyle = createGlobalStyle`
         }
         }
 
+    .logo {
+        clip-path: polygon(59% 1%, 100% 0%, 100% 100%, 60% 100%);
+    }
+
     .react-modal-content {
         width: 100%;
 
