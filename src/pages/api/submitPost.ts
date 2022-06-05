@@ -27,7 +27,7 @@ const handler = nc<NextApiRequest, NextApiResponse>({
     .use(upload.single('file'))
     .post(async (request: IRequest, response) => {
         const session = await getSession({ req: request });
-
+        console.log(session);
         const { description } = request.body;
         const file = request.file;
 
@@ -37,6 +37,7 @@ const handler = nc<NextApiRequest, NextApiResponse>({
         }
 
         if (!file) {
+            console.log('file if');
             return response.status(400).redirect('/');
         }
 
