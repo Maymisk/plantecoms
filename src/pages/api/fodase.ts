@@ -29,7 +29,7 @@ const handler = nc<NextApiRequest, NextApiResponse>({
     }
 });
 
-handler.post('/api/submitpost', async (request: IRequest, response) => {
+handler.post('/api/fodase', async (request: IRequest, response) => {
     const session = await getSession({ req: request });
     const { description } = request.body;
     const file = request.file;
