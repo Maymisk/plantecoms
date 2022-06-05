@@ -29,8 +29,6 @@ const handler = nc<NextApiRequest, NextApiResponse>({
     }
 });
 
-handler.use(upload.single('file'));
-
 handler.post(async (request: IRequest, response) => {
     // const session = await getSession({ req: request });
     // const { description } = request.body;

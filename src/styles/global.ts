@@ -189,4 +189,8 @@ export const GlobalStyle = createGlobalStyle`
     .loading {
         animation: spin 1s ease-out infinite;
     }
+
+    [disabled] {
+        filter: brightness(0.6);
+    }
 `;
