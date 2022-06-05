@@ -11,6 +11,14 @@ interface IRequest extends NextApiRequest {
     file: any;
 }
 
+const upload = multer({
+    storage: multer.diskStorage({
+        destination: join(process.cwd(), 'tmp'),
+        filename: (req, file, cb) =>
+            cb(null, new Date().getTime() + '-' + file.originalname)
+    })
+});
+
 const handler = nc({
     onError: (err, req: NextApiRequest, res: NextApiResponse, next) => {
         console.error(err.stack);
@@ -24,14 +32,6 @@ const handler = nc({
 });
 
 export default handler;
-
-// const upload = multer({
-//     storage: multer.diskStorage({
-//         destination: join(process.cwd(), 'tmp'),
-//         filename: (req, file, cb) =>
-//             cb(null, new Date().getTime() + '-' + file.originalname)
-//     })
-// });
 
 // export default nc<NextApiRequest, NextApiResponse>().post(
 //     '/api/submitpost',
