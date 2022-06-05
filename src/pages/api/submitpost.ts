@@ -11,54 +11,68 @@ interface IRequest extends NextApiRequest {
     file: any;
 }
 
-const upload = multer({
-    storage: multer.diskStorage({
-        destination: join(process.cwd(), 'tmp'),
-        filename: (req, file, cb) =>
-            cb(null, new Date().getTime() + '-' + file.originalname)
-    })
+const handler = nc({
+    onError: (err, req: NextApiRequest, res: NextApiResponse, next) => {
+        console.error(err.stack);
+        res.status(500).end('Something broke!');
+    },
+    onNoMatch: (req, res) => {
+        res.status(404).end('Page is not found');
+    }
+}).post((req, res) => {
+    res.json({ hello: 'world' });
 });
 
-export default nc<NextApiRequest, NextApiResponse>().post(
-    '/api/submitpost',
-    async (request: IRequest, response) => {
-        console.log(request.body);
-        // const session = await getSession({ req: request });
-        // const { description } = request.body;
-        // const file = request.file;
+export default handler;
 
-        // if (!session || !description) {
-        //     deleteFile(join(process.cwd(), 'tmp', file.filename));
-        //     return response.status(400).redirect('/');
-        // }
+// const upload = multer({
+//     storage: multer.diskStorage({
+//         destination: join(process.cwd(), 'tmp'),
+//         filename: (req, file, cb) =>
+//             cb(null, new Date().getTime() + '-' + file.originalname)
+//     })
+// });
 
-        // if (!file) {
-        //     return response.status(400).redirect('/');
-        // }
+// export default nc<NextApiRequest, NextApiResponse>().post(
+//     '/api/submitpost',
+//     async (request: IRequest, response) => {
+//         console.log(request.body);
+// const session = await getSession({ req: request });
+// const { description } = request.body;
+// const file = request.file;
 
-        // const username = session.user.email.split('@')[0];
+// if (!session || !description) {
+//     deleteFile(join(process.cwd(), 'tmp', file.filename));
+//     return response.status(400).redirect('/');
+// }
 
-        // try {
-        //     const object = await fauna.query(
-        //         q.Create(q.Collection('posts'), {
-        //             data: {
-        //                 username,
-        //                 main_picture: join(process.cwd(), 'tmp', file.filename),
-        //                 description
-        //             }
-        //         })
-        //     );
+// if (!file) {
+//     return response.status(400).redirect('/');
+// }
 
-        //     return response.status(201).json(object);
-        // } catch (err) {
-        //     console.log(err);
-        //     return response.status(500).json({ message: 'Perdoa nois, deu erro' });
-        // }
-    }
-);
+// const username = session.user.email.split('@')[0];
 
-export const config = {
-    api: {
-        bodyParser: false
-    }
-};
+// try {
+//     const object = await fauna.query(
+//         q.Create(q.Collection('posts'), {
+//             data: {
+//                 username,
+//                 main_picture: join(process.cwd(), 'tmp', file.filename),
+//                 description
+//             }
+//         })
+//     );
+
+//     return response.status(201).json(object);
+// } catch (err) {
+//     console.log(err);
+//     return response.status(500).json({ message: 'Perdoa nois, deu erro' });
+// }
+//     }
+// );
+
+// export const config = {
+//     api: {
+//         bodyParser: false
+//     }
+// };
