@@ -2,22 +2,13 @@ import { FormEvent, ReactNode } from 'react';
 import { Button } from './styles';
 
 interface IProps {
-    handleFormSubmission(event: FormEvent): void;
     children: ReactNode;
     disabled: boolean;
 }
 
-export function SubmitPostButton({
-    handleFormSubmission,
-    children,
-    disabled
-}: IProps) {
+export function SubmitPostButton({ children, disabled }: IProps) {
     return (
-        <Button
-            type="submit"
-            onClick={handleFormSubmission}
-            disabled={disabled}
-        >
+        <Button type="submit" disabled={disabled}>
             {children}
         </Button>
     );

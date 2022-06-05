@@ -50,7 +50,7 @@ export function CreatePostModal({ isOpen, setIsOpen }: IProps) {
             className="react-modal-content"
             ariaHideApp={false}
         >
-            <form>
+            <form onSubmit={handleFormSubmission}>
                 <button
                     type="button"
                     onClick={() => setIsOpen(false)}
@@ -85,10 +85,7 @@ export function CreatePostModal({ isOpen, setIsOpen }: IProps) {
                     />
                 </div>
                 <div>
-                    <SubmitPostButton
-                        handleFormSubmission={handleFormSubmission}
-                        disabled={isLoading}
-                    >
+                    <SubmitPostButton disabled={isLoading}>
                         {isLoading ? (
                             <AiOutlineLoading className="loading" />
                         ) : (

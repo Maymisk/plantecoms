@@ -29,7 +29,7 @@ import { deleteFile } from '../../utils/deleteFile';
 //     }
 // });
 
-// handler.post('/api/fodase', async (request: IRequest, response) => {
+// handler.post('/api/submitpost', async (request: IRequest, response) => {
 //     const session = await getSession({ req: request });
 //     const { description } = request.body;
 //     const file = request.file;
@@ -50,7 +50,7 @@ import { deleteFile } from '../../utils/deleteFile';
 //             q.Create(q.Collection('posts'), {
 //                 data: {
 //                     username,
-//                     main_picture: file.filename,
+//                     main_picture: join(process.cwd(), 'tmp', file.filename),
 //                     description
 //                 }
 //             })
