@@ -56,6 +56,8 @@ handler.post('/api/submitpost', async (request: IRequest, response) => {
     // }
 });
 
+export default handler;
+
 export const config = {
     api: {
         bodyParser: false
